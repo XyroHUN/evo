@@ -10,16 +10,14 @@ import org.junit.Test;
 
 public class UnitTest {
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
+	private static final String TEST_GENOME = "genome";
+	private static final int TEST_FITNESS = 0;
+	Unit unit;
+	
 	@Before
 	public void setUp() throws Exception {
+		unit = new Unit(TEST_GENOME, TEST_FITNESS);
 	}
 
 	@After
@@ -28,7 +26,9 @@ public class UnitTest {
 
 	@Test
 	public void test() {
-		//fail("Not yet implemented");
+		assertNotNull(unit);
+		assertEquals(TEST_FITNESS, unit.getFitness());
+		assertEquals(TEST_GENOME, unit.getGenome());
 	}
 
 }
