@@ -4,21 +4,23 @@ import java.util.Vector;
 
 public class EvolutionEngine {
 
-  public EvolutionEngine(int populationSize, int genomeSize, String alphabet, Vector<String> drives,
-      int maxCycle, int method, int weight, int mutationRate, boolean differentParents) {
+  public EvolutionEngine(int populationSize, int genomeSize, String alphabet,
+      int maxCycle) {
     this.maxCycle = maxCycle;
-    this.method = method;
-    this.weight = weight;
-    this.mutationRate = mutationRate;
-    this.differentParents = differentParents;
-
+    this.populationSize = populationSize;
+    this.genomeSize=genomeSize;
+    this.alphabet=alphabet;
+    
+    drives = new Vector<>();
     averageFitness = new Vector<>();
     peakFitness = new Vector<>();
-
-    p = new Population(new Environment(populationSize, genomeSize, alphabet, drives));
+    
+    e = new Environment(populationSize, genomeSize, alphabet, drives); 
+    p = new Population(e);
     p.genesis();
   }
 
+  private Environment e;
   private Population p;
   private int maxCycle;
 
@@ -26,29 +28,44 @@ public class EvolutionEngine {
   private Vector<Integer> peakFitness;
   private String allTimeFittestGenome;
   private int allTimePeakFitness;
-
-  private int method;
-  private int weight;
-  private int mutationRate;
-  private boolean differentParents;
+private int populationSize;
+private int genomeSize;
+private String alphabet;
+private Vector<String> drives;
 
   /**
    * Starts the evolution cycle with the configurated parameters.
    */
   public void evolution() {
 
+	  
+	  
     for (int currentCycle = 0; currentCycle < maxCycle; currentCycle++) {
 
       averageFitness.add(p.getavarageFitness());
       peakFitness.add(p.getPeakFitness());
-      p.evolve(method, weight, differentParents);
-      p.mutate(mutationRate);
+      p.evolve();
+      p.mutate();
     }
 
     allTimeFittestGenome = p.getAllTimePeakGenome();
     allTimePeakFitness = p.getAllTimePeakFitness();
+    
+    //clean up for next run
+    
+	averageFitness.clear();
+	peakFitness.clear();
+	
+	e = new Environment(populationSize, genomeSize, alphabet, drives); 
+    p = new Population(e);
+    p.genesis();
   }
 
+	public void addDrive(String drive) {
+		e.addDrive(drive);
+			
+		
+	}
 
   public Vector<Integer> getAverageFitness() {
     return averageFitness;

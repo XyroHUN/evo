@@ -6,46 +6,44 @@
 	<artifactId>evo</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
+	
+	<url>http://maven.apache.org</url>
 
 	<scm>
-		<url>https://github.com/XyroHUN/evo</url>
+		<url>https://github.com/XyroHUN/evo</url>		
 	</scm>
 
 	<name>evo</name>
 	<organization>
-		<name>University of Debrecen</name>
+		<name>University of Debrecen, Faculty of Informatics</name>		
 		<url>www.inf.unideb.hu</url>
 	</organization>
 	<inceptionYear>2017</inceptionYear>
 
-	<description>TODO</description>
 	<developers>
-		<developer>
+		<developer>		
 			<email>v.o.blg04@gmail.com</email>
-			<name>Bereczki László Gábor</name>
+			<name>Bereczki László</name>			
 			<roles>
 				<role>student</role>
 				<role>developer</role>
 			</roles>
-			<timezone>+1</timezone>
-			<organization>University of Debrecenm, Faculty of Informatics</organization>
+			<organization>University of Debrecen, Faculty of Informatics</organization>
 			<organizationUrl>www.inf.unideb.hu</organizationUrl>
 		</developer>
 	</developers>
 
-	<url>http://maven.apache.org</url>
+	
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
 		<!-- versions -->
 		<javadoc-plugin.version>2.10.4</javadoc-plugin.version>
 		<junit.version>4.10</junit.version>
 		<commons-lang3.version>3.5</commons-lang3.version>
 		<commons-io.version>2.5</commons-io.version>
 		<tinylog.version>1.2</tinylog.version>
-
-		<main-class.name>hu.unideb.inf.estran.evo.Main</main-class.name>
+		<main-class.name>hu.unideb.inf.estran.evo.Main</main-class.name>		
 	</properties>
 
 	<dependencies>
@@ -189,4 +187,5 @@
 		</plugins>
 	</reporting>
 
+	<description>This project serves as a university task for the class "Programozási Környezetek". The program implements an evolutionary programming method.</description>
 </project>

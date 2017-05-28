@@ -2,20 +2,33 @@ package hu.unideb.inf.estran.evo;
 
 /**
 *
-*Evolutionary Programming
-*
-*The application aiming to solve a simple task by mimicking the mechanism of the natural evolution.
-*Instead of finding something unknown, the user can explicitly specify evolutionary drives.
-*Thus the program works as a simple but dynamic environment, with multiple fitness alteration.
-*
 *Unit.java - contains the representation of a single unit.
+*Contains a single constructor and the genome/fitness private fields with the getters.
+*
 *Population.java - contains the representation of units as a group, it depends on the environment.
-*Environment.java - contains the evolution(or task) specific details and evolutionary strategies.
-*EvolutionEngine.java - contains the core mechanism of the application, the evolutionary algorithm.
+*Calculate statistics, update information, provides getters and setters.
+*Contains the following evolutionary programming based methods:
+*evolve
+*rouletteWheelSelection
+*randomSelection
+*mutate
+*genesis
 *
+*Environment.java - contains the evolution specific details and evolutionary strategies.
+*Handles the mutation and drive specific tasks, including fitness calculation and drive management.
+*Contains getters, setters and the following evolutionary programming based methods:
+*calculateFitness
+*crossOver
+*mutate
+*addDrive
+*generateUnit
+*generateGenome
 *
-*Bereczki László
-*university of Debrecen, Faculty of Informatics
-*2017
+*EvolutionEngine.java - contains the core mechanism of the application, the
+*evolution() method.
 *
-*/
+*Main.java
+*reads the ALPHABET from source, does the logging and contains the main I/O cycle which communicates with the user, 
+*calling the alghorithm, and providing information through the tinylog interface.
+*
+**/

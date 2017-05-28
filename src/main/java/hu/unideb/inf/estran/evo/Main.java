@@ -3,7 +3,6 @@ package hu.unideb.inf.estran.evo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
-import java.util.Vector;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +22,7 @@ public class Main {
       if (resourceAsStream == null) {
         Logger.error("The main alphabetical configuration file cannot be found!");
       } else {
-        Logger.debug("The main alphabetical configuration file was succesfully read");
+        Logger.trace("The main alphabetical configuration file was found succesfully");
       }
       temp = IOUtils.toString(resourceAsStream);
     } catch (IOException e) {
@@ -33,33 +32,36 @@ public class Main {
   }
 
   public static void main(String[] args) {
+	  
     Configurator.defaultConfig()
         .addWriter(
             new FileWriter(System.getProperty("user.home") + System.getProperty("file.separator")
                 + ".evo" + System.getProperty("file.separator") + "log.txt", false, true))
         .level(Level.INFO).activate();
 
-    Vector<String> drives = new Vector<String>();
-
-
-    int method = 1;
-    int weight = 0;
-    int mutationRate = 1;
-    boolean differentParents = true;
-
     int populationSize = 1000;
     int maxCycle = 1000;
+    int genomeSize = 12;
 
-    int genomeSize = 5; // TODOOOOOOOOOOOOOO
-    // százalékolés
-    /// by0
-
-    drives.add("aaaaa");
-
-    EvolutionEngine ee = new EvolutionEngine(populationSize, genomeSize, ALPHABET, drives, maxCycle,
-        method, weight, mutationRate, differentParents);
-
-
+    EvolutionEngine ee = new EvolutionEngine(populationSize, genomeSize, ALPHABET, maxCycle);
+    
+    /*
+    
+    //for testing
+     
+    ee.addDrive("Hello*******");
+    ee.addDrive("******World*");
+    ee.addDrive("************");
+    ee.addDrive("***** *****!!!");
+    ee.addDrive("XYZ");
+    ee.addDrive("ABC");
+    
+    ee.addDrive("Hello*******");
+    ee.addDrive("******World*");
+    ee.addDrive("***** *****!");
+    
+    */
+    
     boolean continueReading = true;
 
     try (Scanner scanner = new Scanner(System.in)) {
@@ -67,12 +69,10 @@ public class Main {
 
         String input = scanner.nextLine();
         if (input.startsWith("+")) {
-          drives.add(StringUtils.remove(input, "+"));
-        } else if (input.startsWith("-")) {
-          drives.remove(StringUtils.remove(input, "-"));
+          ee.addDrive(StringUtils.remove(input, "+"));        
         } else if ("run".equals(input)) {
           ee.evolution();
-          Logger.info(ee.getAllTimePeakFitness() + ": " + ee.getAllTimeFittestGenome());
+          Logger.info( ee.getAllTimeFittestGenome()+"("+ee.getAllTimePeakFitness() + "%)");
         } else if ("exit".equals(input)) {
           continueReading = false;
         }

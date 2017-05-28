@@ -6,7 +6,6 @@ import java.util.Vector;
 public class Population {
 
   public Population(Environment e) {
-
     this.e = e;
     units = new Vector<>();
   }
@@ -26,20 +25,20 @@ public class Population {
     return avarageFitness;
   }
 
-  public void evolve(int method, int weight, boolean differentParents) {
+  public void evolve() {
 
     Vector<Unit> nextGeneration = new Vector<>();
     Unit u1, u2;
 
     for (int i = 0; i < e.getPopulationSize(); i++) {
 
-      u1 = Selection(method);
-      u2 = Selection(method);
-      while (differentParents && u1.equals(u2)) {
-        u2 = Selection(method);
+      u1 = rouletteWheelSelection();
+      u2 = rouletteWheelSelection();
+      while (u1.equals(u2)) {
+        u2 = rouletteWheelSelection();
       }
 
-      nextGeneration.add(e.crossOver(u1, u2, weight));
+      nextGeneration.add(e.crossOver(u1, u2));
     }
 
     units.clear();
@@ -48,25 +47,11 @@ public class Population {
     update();
   }
 
-  public Unit Selection(int method) { // should be in env - optional upgrade path
-    return method == 0 ? TruncationSelection()
-        : method == 1 ? RouletteWheelSelection() : RandomSelection();
-  }
-
-  public Unit TruncationSelection() { // >= avg ; 0
-    Random rand = new Random();
-    Unit u = units.elementAt(rand.nextInt(e.getPopulationSize()));
-
-    while (u.getFitness() < avarageFitness)
-      u = units.elementAt(rand.nextInt(e.getPopulationSize()));
-
-    return u;
-  }
-
-  public Unit RouletteWheelSelection() { // weighted by fitness ; IF popF is 0 -> randomS
+  
+  public Unit rouletteWheelSelection() { // weighted by fitness ; IF popF is 0 -> randomS
 
     if (populationFitness == 0)
-      return RandomSelection();
+      return randomSelection();
 
     else {
 
@@ -80,19 +65,16 @@ public class Population {
     }
   }
 
-  public Unit RandomSelection() { // random
+  public Unit randomSelection() { // random
     Random rand = new Random();
     return units.elementAt(rand.nextInt(e.getPopulationSize()));
   }
 
-  public void mutate(int mutationRate) {
+  public void mutate() {
 
-    Random rand = new Random();
-    mutationRate = mutationRate < 0 ? 0 : mutationRate > 10 ? 10 : mutationRate;
 
     for (int i = 0; i < e.getPopulationSize(); i++)
-      if (rand.nextInt(10) < mutationRate)
-        units.set(i, e.mutate(units.elementAt(i), mutationRate));
+        units.set(i, e.mutate(units.elementAt(i)));
 
     update();
   }
@@ -166,4 +148,6 @@ public class Population {
 
     return allTimePeakFitness;
   }
+
+
 }

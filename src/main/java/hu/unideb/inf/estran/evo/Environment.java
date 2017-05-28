@@ -5,152 +5,124 @@ import java.util.Vector;
 
 public class Environment {
 
-  private int populationSize;
-  private int genomeSize;
-  private String alphabet; // gene pool
-  private Vector<String> drives; // motivators, evolutionary drives
+	private final int unitMutationRate = 8;
+	private final int geneMutationRate = 2;
 
-  public Environment(int populationSize, int genomeSize, String alphabet, Vector<String> drives) {
+	private int populationSize;
+	private int genomeSize;
+	private String alphabet; // gene pool
+	private Vector<String> drives; // motivators, evolutionary drives
 
-    this.populationSize = populationSize;
-    this.genomeSize = genomeSize;
-    this.alphabet = alphabet;
-    this.drives = drives;
+	public Environment(int populationSize, int genomeSize, String alphabet, Vector<String> drives) {
 
-    // if(isAlphaValid() && isOmegaValid()) {} else {} //its okay...
-  }
+		this.populationSize = populationSize;
+		this.genomeSize = genomeSize;
+		this.alphabet = alphabet;
+		this.drives = drives;
 
+	}
 
-  public int getPopulationSize() {
-    return populationSize;
-  }
+	public int getPopulationSize() {
+		return populationSize;
+	}
 
-  public int getGenomeSize() {
-    return genomeSize;
-  }
+	public int getGenomeSize() {
+		return genomeSize;
+	}
 
-  public String getAlphabet() {
-    return alphabet;
-  }
+	public String getAlphabet() {
+		return alphabet;
+	}
 
+	public void addDrive(String drive) {
 
-  public boolean isDriveValid() { // to add it to the vector
-    /*
-     * boolean charFound = false; boolean allFound = true;
-     * 
-     * for (char co: omega.toCharArray()) { for (char cab: alphabet.toCharArray()) { if (co==cab)
-     * charFound = true; } allFound &= charFound; charFound = false; }
-     * 
-     * return allFound && omega.length()==genomeSize;
-     */
-    return true;
-  }
+		drive = drive.substring(0, Math.min(drive.length(), genomeSize));
+		String tail = "";
+		for(int i = 0;i < genomeSize-drive.length();i++) tail += "*";
+		
+		drives.add(drive+tail);
+	}
 
-  public void addDrive(String drive) {
-    drives.add(drive);
-  }
+	public Unit mutate(Unit u) {
 
+		Random rand = new Random();
+		if (rand.nextInt(100) < unitMutationRate) {
+			String genome = "";
+			for (int i = 0; i < genomeSize; i++) {
+				genome += rand.nextInt(100) < geneMutationRate ? alphabet.charAt(rand.nextInt(alphabet.length()))
+						: u.getGenome().charAt(i);
+			}
 
-  public Unit mutate(Unit u, int mutationRate) {
+			return new Unit(genome, calculateFitness(genome));
+		}
 
-    mutationRate = mutationRate < 0 ? 0 : mutationRate > 10 ? 10 : mutationRate;
-    Random rand = new Random();
-    String genome = "";
-    for (int i = 0; i < genomeSize; i++) {
-      genome += rand.nextInt(10) < mutationRate ? alphabet.charAt(rand.nextInt(alphabet.length()))
-          : u.getGenome().charAt(i);
-    }
+		else
+			return u;
+	}
 
-    return new Unit(genome, calculateFitness(genome));
-  }
+	public Unit crossOver(Unit u1, Unit u2) {
 
-  public Unit crossOver(Unit u1, Unit u2, int weight) {
+		Random rand = new Random();
+		Unit better;
+		Unit worse;
 
-    Random rand = new Random();
-    String s = "";
+		if (u1.getFitness() > u2.getFitness()) {
+			better = u1;
+			worse = u2;
+		} else {
+			better = u2;
+			worse = u1;
+		}
 
-    if (weight == -1)
-      for (int i = 0; i < genomeSize; i++)
-        s += rand.nextInt(1) == 0 ? u1.getGenome().charAt(i) : u2.getGenome().charAt(i);
+		String s = "";
+		int chance = better.getFitness();
 
-    else if (weight == 0) {
-      Unit u3 = u1.getFitness() > u2.getFitness() ? u1 : u2;
-      int whyTHOUGH = Math.abs(u1.getFitness() - u2.getFitness() + 1);
-      whyTHOUGH = whyTHOUGH == 0 ? 1 : whyTHOUGH;
-      int chance = Math.round(100 / (whyTHOUGH));
-      for (int i = 0; i < genomeSize; i++)
-        s += rand.nextInt(chance) == 0 ? u3.getGenome().charAt(i)
-            : rand.nextInt(1) == 0 ? u1.getGenome().charAt(i) : u2.getGenome().charAt(i);
-    }
+		for (int i = 0; i < genomeSize; i++)
+			s += rand.nextInt(100) <= chance ? better.getGenome().charAt(i) : worse.getGenome().charAt(i);
 
-    else {
-      Unit u3 = u1.getFitness() > u2.getFitness() ? u1 : u2;
-      for (int i = 0; i < genomeSize; i++)
-        s += rand.nextInt(4) != 0 ? u3.getGenome().charAt(i)
-            : rand.nextInt(1) == 0 ? u1.getGenome().charAt(i) : u2.getGenome().charAt(i);
-    }
+		Unit u = new Unit(s, calculateFitness(s));
+		return u;
 
-    Unit u = new Unit(s, calculateFitness(s));
-    return u;
-  }
+	}
 
-  /*
-   * public Unit Mutate (Unit u, int mutationRate) { return u; } //optional upgrade path public
-   * Vector<Unit> Elitism (Population p, int elitismRate) { return p.getUnits(); }
-   */
-  public int calculateFitness(String s) { // 0 is a no match, 100 is a perfect match - peakUnit
+	public int calculateFitness(String s) { // 0 is a no match, 100 is a perfect
+											// match - peakUnit
 
-    // üres vector
-    // vector valid
-    // vector elemei validak - ez csak hozzáadásnál kell
+		int genomeFitness = 0;
 
-    int genomeFitness = 0;
+		for (String drive : drives) {
 
-    for (String drive : drives) {
+			if (s.equals(drive))
+				genomeFitness += 100;
+			else {
 
-      if (s.equals(drive))
-        genomeFitness += 100;
-      else {
+				int geneFitness = Math.round(100 / genomeSize);
 
-        int geneFitness = Math.round(100 / (genomeSize - unGeneNumber(drive)));
+				for (int i = 0; i < s.length(); i++) {
+					genomeFitness += s.charAt(i) == drive.charAt(i) ? geneFitness : 0;
+				}
 
-        for (int i = 0; i < s.length(); i++) {
-          // if (drive.charAt(i)!='*')
-          genomeFitness += s.charAt(i) == drive.charAt(i) ? geneFitness : 0;
-        }
+			}
+		}
+		return genomeFitness;
+
+	}
 
 
-      }
-    }
-    return genomeFitness / drives.size();
+	public String generateGenome() {
 
-  }
+		Random rand = new Random();
+		String s = "";
+		for (int i = 0; i < genomeSize; i++)
+			s += alphabet.charAt(rand.nextInt(alphabet.length()));
 
-  private int unGeneNumber(String drive) {
-    int count = 0;
-    for (char c : drive.toCharArray())
-      count += c == '*' ? 1 : 0;
-    return count;
-  }
+		return s;
+	}
 
-
-  public String generateGenome() {
-
-    Random rand = new Random();
-    String s = "";
-    for (int i = 0; i < genomeSize; i++)
-      s += alphabet.charAt(rand.nextInt(alphabet.length()));
-
-    return s;
-  }
-
-
-
-  public Unit generateUnit() {
-    String genome = generateGenome();
-    Unit u = new Unit(genome, calculateFitness(genome));
-    return u;
-  }
-
+	public Unit generateUnit() {
+		String genome = generateGenome();
+		Unit u = new Unit(genome, calculateFitness(genome));
+		return u;
+	}
 
 }
