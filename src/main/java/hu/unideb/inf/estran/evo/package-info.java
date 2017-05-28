@@ -1,5 +1,3 @@
-package hu.unideb.inf.estran.evo;
-
 /**
 *
 *Unit.java - contains the representation of a single unit.
@@ -32,3 +30,4 @@ package hu.unideb.inf.estran.evo;
 *calling the alghorithm, and providing information through the tinylog interface.
 *
 **/
+package hu.unideb.inf.estran.evo;

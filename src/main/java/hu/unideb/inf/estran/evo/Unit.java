@@ -1,9 +1,14 @@
 package hu.unideb.inf.estran.evo;
 
+/**
+ * Representation of a single unit in a population.
+ * @author Xyro
+ *
+ */
 public class Unit {
 
   /**
-   * Representation of a single unit in a population.
+   * Constructor for the class.
    *
    * @param genome is the genome(gene sequence) of the unit
    * @param fitness is the fitness(score) of the unit

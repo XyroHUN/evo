@@ -11,9 +11,17 @@ import org.pmw.tinylog.Level;
 import org.pmw.tinylog.Logger;
 import org.pmw.tinylog.writers.FileWriter;
 
+/**
+ * The main class of the project. Responsible for the IO, logging and the reading of the resources.
+ * @author Xyro
+ *
+ */
 @SuppressWarnings("deprecation")
 public class Main {
 
+  /**
+   * Contains the characters that can be used as a gene.
+   */
   private static final String ALPHABET;
   static {
     String temp = null;
@@ -31,6 +39,10 @@ public class Main {
     ALPHABET = temp;
   }
 
+  /**
+   * Initializing an EvolutionEngine instance, reading from the console and logging through the tinylog plugin.
+   * @param args arguments are not use in the calling of the main method
+   */
   public static void main(String[] args) {
 	  
     Configurator.defaultConfig()
