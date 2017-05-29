@@ -6,24 +6,33 @@
 	<artifactId>evo</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
-	
+
 	<url>http://maven.apache.org</url>
 
 	<scm>
-		<url>https://github.com/XyroHUN/evo</url>		
+		<url>https://github.com/XyroHUN/evo</url>
 	</scm>
+
+	<licenses>
+		<license>
+			<distribution>repo</distribution>
+			<name>Apache License Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
 
 	<name>evo</name>
 	<organization>
-		<name>University of Debrecen, Faculty of Informatics</name>		
+		<name>University of Debrecen, Faculty of Informatics</name>
 		<url>www.inf.unideb.hu</url>
 	</organization>
 	<inceptionYear>2017</inceptionYear>
 
 	<developers>
-		<developer>		
+		<developer>
 			<email>v.o.blg04@gmail.com</email>
-			<name>Bereczki László</name>			
+			<name>Bereczki László</name>
 			<roles>
 				<role>student</role>
 				<role>developer</role>
@@ -33,7 +42,7 @@
 		</developer>
 	</developers>
 
-	
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -43,7 +52,7 @@
 		<commons-lang3.version>3.5</commons-lang3.version>
 		<commons-io.version>2.5</commons-io.version>
 		<tinylog.version>1.2</tinylog.version>
-		<main-class.name>hu.unideb.inf.estran.evo.Main</main-class.name>		
+		<main-class.name>hu.unideb.inf.estran.evo.Main</main-class.name>
 	</properties>
 
 	<dependencies>

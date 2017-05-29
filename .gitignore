@@ -1,6 +1,6 @@
 # Compiled class file
 *.class
-**/target
+target/
 
 
 # Log file
@@ -24,6 +24,6 @@
 hs_err_pid*
 
 # IDE specific files
-**/.project
-**/.classpath
-**/.settings
+.project
+.classpath
+.settings/
